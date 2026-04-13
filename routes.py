@@ -21,14 +21,14 @@ def register_routes(app):
         conn = get_connection()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT * FROM users WHERE name = ?", (name,))
+        cursor.execute("SELECT * FROM users WHERE user_name = ?", (name,))
         if cursor.fetchone():
             conn.close()
             return jsonify({
                 "error": "User already exists"
             }), 400
         
-        cursor.execute("INSERT INTO users (name, password) VALUES (?, ?)", (name, password))
+        cursor.execute("INSERT INTO users (user_name, user_password) VALUES (?, ?)", (name, password))
         conn.commit()
         conn.close()
         return jsonify({
@@ -46,7 +46,7 @@ def register_routes(app):
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT * FROM users WHERE name = ? AND password = ?", (name, password)
+            "SELECT * FROM users WHERE user_name = ? AND user_password = ?", (name, password)
         )
         user = cursor.fetchone()
         conn.close()
