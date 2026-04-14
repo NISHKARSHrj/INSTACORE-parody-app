@@ -69,7 +69,9 @@ def register_routes(app):
             }), 401
 
         return jsonify({
-            "message": "Login successful"
+            "message": "Login successful",
+            "user_id": user[0],
+            "user_name": user[1]
         }), 200
     
     # post a new post
