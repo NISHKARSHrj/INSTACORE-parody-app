@@ -38,9 +38,9 @@ def register_routes(app):
     def signup():
         if request.method == "GET":
             return render_template("signup.html")
-
-        name = request.form.get("name")
-        password = request.form.get("password")
+        data = request.get_json()
+        name = data.get("name")
+        password = data.get("password")
 
         if not name or not password:
             return jsonify({
@@ -68,9 +68,9 @@ def register_routes(app):
         if request.method == "GET":
             return render_template("login.html")
 
-
-        name = request.form.get("name")
-        password = request.form.get("password")
+        data = request.get_json()
+        name = data.get("name")
+        password = data.get("password")
 
         conn = get_connection()
         cursor = conn.cursor()
