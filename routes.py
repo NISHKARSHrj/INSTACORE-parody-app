@@ -113,9 +113,11 @@ def register_routes(app):
         cursor = conn.cursor()
 
         cursor.execute("""
-            SELECT posts.id, posts.content, posts.image_path, posts.timestamp, users.user_name
+            SELECT posts.id, posts.content, posts.image_path, posts.timestamp, users.user_name, COUNT(likes.id) as like_count 
             FROM posts
             JOIN users ON posts.user_id = users.id
+            LEFT JOIN likes ON posts.id = likes.post_id
+            GROUP BY posts.id
             ORDER BY posts.id DESC
         """)
 
@@ -128,7 +130,40 @@ def register_routes(app):
                 "content": r[1],
                 "image": r[2],
                 "timestamp": r[3],
-                "user": r[4]
+                "user": r[4],
+                "like_count": r[5]
             }
             for r in rows
         ])
+    
+    @app.route("/like", methods=["POST"])
+    def like_post():
+        data = request.get_json()
+        user_id = data.get("user_id")
+        post_id = data.get("post_id")
+
+        if not user_id or not post_id:
+            return jsonify({
+                "error": "User ID and Post ID are required"
+            }), 400
+
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT * FROM likes WHERE user_id = ? AND post_id = ?", (user_id, post_id))
+
+        existing = cursor.fetchone()
+        if existing:
+            # unlike
+            cursor.execute("DELETE FROM likes WHERE user_id = ? AND post_id = ?", (user_id, post_id))
+            action = "unliked"
+        else:
+            cursor.execute("INSERT INTO likes (user_id, post_id) VALUES (?, ?)", (user_id,post_id))
+            action = "liked"
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "message": f"Post {action} successfully"
+        }), 201
