@@ -169,3 +169,44 @@ def register_routes(app):
         return jsonify({
             "message": f"Post {action} successfully"
         }), 201
+    
+    @app.route("/dltposts", methods=["DELETE"])
+    def dltpost():
+        data = request.get_json()
+        post_id  = data.get("post_id")
+        if not post_id:
+            return jsonify({
+                "error": "Post ID is required"
+            }), 400
+
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("DELETE FROM posts WHERE id = ?", (post_id,)), 200
+        conn.commit()
+        conn.close()
+
+        return  jsonify({
+            "message": "Post deleted successfully"
+        })
+
+    @app.route("/dltuser", methods=["DELETE"])
+    def dltuser():
+        data = request.get_json()
+        user_id = data.get("user_id")
+        if not user_id:
+            return jsonify({
+                "error": "User ID is required"
+            }), 400
+
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("DELETE FROM users WHERE id = ?", (user_id,)), 200
+        cursor.execute("DELETE FROM posts WHERE user_id = ?", (user_id,))
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "message": "User deleted successfully"
+        })
