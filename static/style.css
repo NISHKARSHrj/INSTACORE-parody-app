@@ -29,9 +29,7 @@ body {
 }
 
 
-/* ════════════════════════════════════════
-   AUTH PAGES — login.html & signup.html
-════════════════════════════════════════ */
+   /* AUTH PAGES — login.html & signup.html */
 
 /* Center the card vertically and horizontally on auth pages */
 body.auth-page {
@@ -40,7 +38,7 @@ body.auth-page {
   justify-content: center;
 }
 
-/* White card that holds the login/signup form */
+/* White card that holds the login/signup */
 .card {
   background: var(--white);
   border: 1px solid var(--border);
@@ -93,7 +91,7 @@ body.auth-page {
   border-bottom-color: var(--accent);
 }
 
-/* Form field wrapper */
+/* field wrapper */
 .field {
   margin-bottom: 1rem;
 }
@@ -148,15 +146,6 @@ body.auth-page {
   opacity: 0.8;
 }
 
-/* Flash messages — shown by Flask after form submission */
-.flash {
-  font-size: 13px;
-  text-align: center;
-  margin-top: 1rem;
-  padding: 0.5rem 0.8rem;
-  border-radius: 8px;
-}
-
 
 #login-message{
     text-align: center;
@@ -168,9 +157,9 @@ body.auth-page {
 }
 
 
-/* ════════════════════════════════════════
-   FEED PAGE — feed.html
-════════════════════════════════════════ */
+
+   /* FEED PAGE — feed.html */
+
 
 /* ── Top Navigation Bar ── */
 .navbar {
