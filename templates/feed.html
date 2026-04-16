@@ -1,13 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>feed</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InstaCore — Feed</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <!-- Your existing style.css already has all the feed CSS in it -->
+  <link rel="stylesheet" href="/static/style.css"/>
 </head>
 <body>
-    <h1>welcome
-    
-    </h1>
+
+<!-- ═══════════════════════════════════════
+     TOP NAVBAR
+     - brand name on left
+     - user avatar + username + logout on right
+     - position:sticky so it stays while scrolling
+════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-brand">instacore</div>
+  <div class="nav-right">
+    <!-- Avatar circle — JS fills in the initials -->
+    <div class="avatar" id="nav-avatar"></div>
+    <span class="nav-username" id="nav-username"></span>
+    <!-- Calls logout() in feed.js -->
+    <a href="#" class="logout-link" onclick="logout()">log out</a>
+  </div>
+</nav>
+
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════
+       NEW POST BOX
+       - textarea for text content
+       - optional image upload with preview
+       - post button calls createPost() in feed.js
+  ════════════════════════════════════════ -->
+  <div class="new-post">
+    <div class="new-post-header">
+      <!-- Avatar — JS fills in initials -->
+      <div class="avatar" id="post-avatar" style="background:var(--black)"></div>
+      <span style="font-size:14px; color:var(--muted)">what's on your mind?</span>
+    </div>
+
+    <!-- Text input for post content -->
+    <textarea id="post-content" placeholder="write something..."></textarea>
+
+    <!-- Image preview — hidden until user picks a file -->
+    <!-- JS sets display:block when file is chosen -->
+    <img id="img-preview"/>
+
+    <div class="post-actions">
+      <!--
+        label with for="img-input" acts as a styled button.
+        Clicking it opens the file picker.
+        The real input below is hidden with CSS (#img-input { display:none })
+      -->
+      <label class="img-label" for="img-input">📷 add photo</label>
+      <input
+        type="file"
+        id="img-input"
+        accept="image/*"
+        onchange="previewImage(this)"
+      />
+
+      <!-- Calls createPost() in feed.js -->
+      <button class="post-btn" id="post-btn" onclick="createPost()">post</button>
+    </div>
+
+    <!-- Error message shown if post fails -->
+    <p id="post-error" style="font-size:13px; color:var(--accent); margin-top:8px; display:none;"></p>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       POSTS FEED
+       - empty by default
+       - JS calls GET /posts and renders cards here
+  ════════════════════════════════════════ -->
+  <div id="posts-container">
+    <!-- Posts are injected here by renderPosts() in feed.js -->
+    <div class="empty" id="feed-loading">loading posts...</div>
+  </div>
+
+</div>
+
+
+<!--
+  Flask passes user_id into the template with render_template().
+  We store it in a JS variable so feed.js can use it for
+  creating posts and liking posts.
+
+  In your routes.py feed() function:
+    return render_template("feed.html", user_id=session["user_id"])
+-->
+<script>
+//   const USER_ID = {{ user_id }};
+</script>
+
+<!-- All feed logic lives in feed.js -->
+<script src="/static/feed.js"></script>
+
 </body>
 </html>
