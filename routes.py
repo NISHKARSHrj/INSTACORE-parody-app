@@ -33,6 +33,7 @@ def register_routes(app):
 
         return render_template("feed.html", user_id=session["user_id"])
 
+
     # signup in the application
     @app.route("/signup", methods=["GET", "POST"])
     def signup():
@@ -89,6 +90,7 @@ def register_routes(app):
             }), 401
         
         session["user_id"] = user[0]
+        session["user_name"] = user[1]
 
         return jsonify({
         "message": "Login successful"

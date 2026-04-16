@@ -1,3 +1,7 @@
+
+
+
+
 // load poast on feed
 
 async function load_posts() {
@@ -32,7 +36,7 @@ async function load_posts() {
             container.appendChild(postl)
         })
     }catch(err){
-        container.innerHTML = `<div class = "empty">failed to load poats</div>`
+        container.innerHTML = `<div class = "empty">failed to load posts</div>`
     }
 }
 
@@ -44,11 +48,11 @@ async function createPost() {
     let error = document.getElementById("post-error")
 
     let formdata = new FormData()
-        formdata.append("user_id", USER_ID)
-        formdata.append("content", content)
-        if (iamge){
-            formdata.append("image", image)
-        }
+    formdata.append("user_id", USER_ID)
+    formdata.append("content", content)
+    if (image){
+        formdata.append("image", image)
+    }
     
     try{
         let res = await fetch("/posts", {
@@ -78,3 +82,46 @@ async function createPost() {
 }
 
 // like posts
+
+async function likePost(postId) {
+    await fetch("/like", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            user_id: USER_ID,
+            post_id: postId })
+    })
+    load_posts()
+}
+
+// image-preview
+
+function previewImage(input){
+    let preview = document.getElementById("img-preview")
+
+    if (input.files && input.files[0]) {
+        preview.src = URL.createObjectURL(input.files[0])
+        preview.style.display = "block"
+    }
+    else {
+        preview.style.display = 'none';
+    }
+}
+
+// logout
+
+async function logout() {
+    await fetch("/logout")
+    window.location.href = "/login"
+}
+
+// formatTime
+
+function formatTime(ts) {
+    let date = new Date(ts);
+    return date.toLocaleString();
+}
+
+load_posts()

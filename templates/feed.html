@@ -73,9 +73,8 @@
 
 
 <script>
-//   const USER_ID = {{ user_id }};
+    const USER_ID = JSON.parse('{{ user_id | tojson }}');
 </script>
-
 <!-- All feed logic lives in feed.js -->
 <script src="/static/feed.js"></script>
 
