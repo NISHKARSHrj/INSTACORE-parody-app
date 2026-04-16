@@ -31,6 +31,11 @@ async function load_posts() {
                 ${post.image ? `<img src="/static/uploads/${post.image}" class="post-img">` : ""}
                 <div class = "post-footer">
                     <button class="like-btn" onclick="likePost(${post.id})"> ❤️ ${post.like_count} </button>
+                    ${post.user_id == USER_ID ? `
+                        <button class="like-btn" onclick="deletePost(${post.id})">
+                        🗑 delete
+                        </button>
+                    ` : ""}
                 </div>
             `
             container.appendChild(postl)
@@ -40,6 +45,21 @@ async function load_posts() {
     }
 }
 
+async function fetchCurrentUser() {
+  try {
+    let res  = await fetch('/me');
+    let data = await res.json();
+ 
+    if (res.ok) {
+      let initials = data.user_name.slice(0, 2).toUpperCase();
+      document.getElementById('nav-avatar').textContent   = initials;
+      document.getElementById('nav-username').textContent = data.user_name;
+      document.getElementById('post-avatar').textContent  = initials;
+    }
+  } catch (e) {
+    console.error('Could not fetch user info:', e);
+  }
+}
 // create posts
 
 async function createPost() {
@@ -94,6 +114,22 @@ async function likePost(postId) {
             post_id: postId })
     })
     load_posts()
+}
+
+// dltposts 
+
+async function deletePost(postId) {
+    await fetch("/dltposts", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            post_id: postId
+        })
+    })
+    load_posts()
+
 }
 
 // image-preview

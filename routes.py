@@ -102,6 +102,14 @@ def register_routes(app):
         return jsonify({
             "message": "Logged out successfully"
         })
+    @app.route("/me")
+    def me():
+        if "user_id" not in session:
+            return jsonify({"error": "not logged in"}), 401
+        return jsonify({
+            "user_id":   session["user_id"],
+            "user_name": session["user_name"]
+        })
     # post a new post
     @app.route("/posts", methods = ["POST"])
     def create_post():
@@ -143,7 +151,7 @@ def register_routes(app):
         cursor = conn.cursor()
 
         cursor.execute("""
-            SELECT posts.id, posts.content, posts.image_path, posts.timestamp, users.user_name, COUNT(likes.id) as like_count 
+            SELECT posts.id, posts.content, posts.image_path, posts.timestamp, users.user_name, posts.user_id, COUNT(likes.id) as like_count 
             FROM posts
             JOIN users ON posts.user_id = users.id
             LEFT JOIN likes ON posts.id = likes.post_id
@@ -161,7 +169,8 @@ def register_routes(app):
                 "image": r[2],
                 "timestamp": r[3],
                 "user": r[4],
-                "like_count": r[5]
+                "user_id": r[5],
+                "like_count": r[6]
             }
             for r in rows
         ])
