@@ -13,12 +13,7 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════
-     TOP NAVBAR
-     - brand name on left
-     - user avatar + username + logout on right
-     - position:sticky so it stays while scrolling
-════════════════════════════════════════ -->
+
 <nav class="navbar">
   <div class="nav-brand">instacore</div>
   <div class="nav-right">
@@ -33,12 +28,7 @@
 
 <div class="container">
 
-  <!-- ═══════════════════════════════════════
-       NEW POST BOX
-       - textarea for text content
-       - optional image upload with preview
-       - post button calls createPost() in feed.js
-  ════════════════════════════════════════ -->
+
   <div class="new-post">
     <div class="new-post-header">
       <!-- Avatar — JS fills in initials -->
@@ -54,11 +44,7 @@
     <img id="img-preview"/>
 
     <div class="post-actions">
-      <!--
-        label with for="img-input" acts as a styled button.
-        Clicking it opens the file picker.
-        The real input below is hidden with CSS (#img-input { display:none })
-      -->
+      
       <label class="img-label" for="img-input">📷 add photo</label>
       <input
         type="file"
@@ -76,11 +62,7 @@
   </div>
 
 
-  <!-- ═══════════════════════════════════════
-       POSTS FEED
-       - empty by default
-       - JS calls GET /posts and renders cards here
-  ════════════════════════════════════════ -->
+  
   <div id="posts-container">
     <!-- Posts are injected here by renderPosts() in feed.js -->
     <div class="empty" id="feed-loading">loading posts...</div>
@@ -89,14 +71,7 @@
 </div>
 
 
-<!--
-  Flask passes user_id into the template with render_template().
-  We store it in a JS variable so feed.js can use it for
-  creating posts and liking posts.
 
-  In your routes.py feed() function:
-    return render_template("feed.html", user_id=session["user_id"])
--->
 <script>
 //   const USER_ID = {{ user_id }};
 </script>
