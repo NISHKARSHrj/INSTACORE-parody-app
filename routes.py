@@ -247,3 +247,32 @@ def register_routes(app):
         return jsonify({
             "message": "User deleted successfully"
         })
+    
+
+    @app.route("/editpost", methods=["PUT"])
+    def editpost():
+        data = request.get_json()
+
+        post_id = data.get("post_id")
+        content = data.get("content")
+
+        if not post_id:
+            return jsonify({
+                "error": "Post ID is required"
+            }), 400
+        
+        conn = get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE posts
+            SET content = ?
+            WHERE id = ?
+        """), (content, post_id)
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({
+            "message": "Post updated successfully"
+        })

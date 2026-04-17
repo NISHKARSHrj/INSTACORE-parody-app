@@ -32,6 +32,7 @@ async function load_posts() {
                 <div class = "post-footer">
                     <button class="like-btn" onclick="likePost(${post.id})"> ❤️ ${post.like_count} </button>
                     ${post.user_id == USER_ID ? `
+                        <button class="like-btn" onclick = "editpost(${post.id}, '${post.content}')">✏️ edit</button>
                         <button class="like-btn" onclick="deletePost(${post.id})">
                         🗑 delete
                         </button>
@@ -159,5 +160,25 @@ function formatTime(ts) {
     let date = new Date(ts);
     return date.toLocaleString();
 }
+
+async function editpost(postId, oldContent) {
+    let newContent = prompt("Edit your post:", oldContent);
+    
+    if (!newContent) return;
+
+    await fetch("/editpost",{
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            post_id: postId,
+            content: newContent
+        })
+    })
+    load_posts()        
+}
+
+
 
 load_posts()
