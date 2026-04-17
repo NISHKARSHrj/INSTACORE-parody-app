@@ -1,10 +1,15 @@
 import os
+import cloudinary
+import cloudinary.uploader
 from flask import request, jsonify, render_template, redirect,session
 from dotenv import load_dotenv 
 from werkzeug.utils import secure_filename
 from database import get_connection
 from datetime import datetime
 from utils import UPLOAD_FOLDER, configure,ALLOWED_EXTENSIONS, allowed_files
+from dotenv import load_dotenv
+load_dotenv()
+configure()
 
 load_dotenv()
 
@@ -133,10 +138,8 @@ def register_routes(app):
         image_path = None
 
         if image and allowed_files(image.filename):
-            filename = secure_filename(image.filename)
-            save_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-            image.save(save_path)
-            image_path = filename 
+            upload_result = cloudinary.uploader.upload(image)
+            image_path = upload_result["secure_url"]
 
         timestamp = datetime.utcnow().isoformat()
 

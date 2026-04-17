@@ -28,7 +28,7 @@ async function load_posts() {
                     <div class = "post-time">${formatTime(post.timestamp)}</div>
                 </div>
                 <div class="post-content">${post.content || ""}</div>
-                ${post.image ? `<img src="/static/uploads/${post.image}" class="post-img">` : ""}
+                ${post.image ? `<img src="${post.image}" class="post-img">` : ""}
                 <div class = "post-footer">
                     <button class="like-btn" onclick="likePost(${post.id})"> ❤️ ${post.like_count} </button>
                     ${post.user_id == USER_ID ? `
@@ -42,6 +42,7 @@ async function load_posts() {
             container.appendChild(postl)
         })
     }catch(err){
+        console.error(err)
         container.innerHTML = `<div class = "empty">failed to load posts</div>`
     }
 }
@@ -163,7 +164,7 @@ function formatTime(ts) {
 
 async function editpost(postId, oldContent) {
     let newContent = prompt("Edit your post:", oldContent);
-    
+
     if (!newContent) return;
 
     await fetch("/editpost",{
