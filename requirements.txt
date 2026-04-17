@@ -2,3 +2,5 @@ flask
 werkzeug
 python-dotenv
 cloudinary
+psycopg2-binary
+gunicorn
