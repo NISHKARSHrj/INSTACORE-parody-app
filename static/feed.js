@@ -28,7 +28,13 @@ async function load_posts() {
                     <div class = "post-time">${formatTime(post.timestamp)}</div>
                 </div>
                 <div class="post-content">${post.content || ""}</div>
-                ${post.image ? `<img src="${post.image}" class="post-img">` : ""}
+                ${post.image ? (
+                    post.image.endsWith(".mp4") || post.image.endsWith(".mov")
+                    ? `<video controls class="post-img">
+                        <source src="${post.image}" type="video/mp4">
+                        </video>`
+                        : `<img src="${post.image}" class="post-img">`
+                    ) : ""}
                 <div class = "post-footer">
                     <button class="like-btn" onclick="likePost(${post.id})"> ❤️ ${post.like_count} </button>
                     ${post.user_id == USER_ID ? `

@@ -11,8 +11,10 @@ def configure():
         api_secret=os.getenv("API_SECRET")
     )
 UPLOAD_FOLDER = "static/uploads"
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
-
+ALLOWED_EXTENSIONS = {
+    "png", "jpg", "jpeg", "gif", "webp",
+    "mp4", "mov", "avi", "mkv"
+}
 def allowed_files(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

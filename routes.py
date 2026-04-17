@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from database import get_connection
 from datetime import datetime
-from utils import UPLOAD_FOLDER, configure,ALLOWED_EXTENSIONS, allowed_files
+from utils import UPLOAD_FOLDER,  configure,ALLOWED_EXTENSIONS, allowed_files
 from dotenv import load_dotenv
 load_dotenv()
 configure()
@@ -138,8 +138,16 @@ def register_routes(app):
         image_path = None
 
         if image and allowed_files(image.filename):
-            upload_result = cloudinary.uploader.upload(image)
-            image_path = upload_result["secure_url"]
+            ext = image.filename.rsplit(".", 1)[1].lower()
+            if ext in ["mp4", "mov", "avi", "mkv"]:
+                upload_res = cloudinary.uploader.upload(
+                    image,
+                    resource_type = "video"
+                )
+            else:
+                upload_res = cloudinary.uploader.upload(image)
+            
+            image_path = upload_res["secure_url"]
 
         timestamp = datetime.utcnow().isoformat()
 
