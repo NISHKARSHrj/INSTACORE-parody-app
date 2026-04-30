@@ -2,7 +2,7 @@
 
 InstaCore is a full-stack social media web application where users can create posts, upload images, like posts, and manage their content.
 
-🌐 **Live App:** https://instacore-app.onrender.com
+🌐 **Live App:** https://instacore-parody-app.onrender.com
 
 ---
 
