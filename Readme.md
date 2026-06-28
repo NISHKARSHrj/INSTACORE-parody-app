@@ -1,5 +1,3 @@
-https://instacore-toq2.onrender.com
-
 # 📸 InstaCore
 
 > A modern full-stack social media web application built with Flask, PostgreSQL, and Cloudinary.
