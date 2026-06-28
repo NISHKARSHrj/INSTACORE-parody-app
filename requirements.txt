@@ -1,6 +1,8 @@
-flask
-werkzeug
+Flask
+Werkzeug
 python-dotenv
 cloudinary
 psycopg2-binary
 gunicorn
+Flask-SQLAlchemy
+Flask-Login
