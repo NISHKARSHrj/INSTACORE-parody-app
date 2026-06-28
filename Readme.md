@@ -1,4 +1,4 @@
-# 🚀 InstaCore — Social Media App
+  # 🚀 InstaCore — Social Media App
 
 InstaCore is a full-stack social media web application where users can create posts, upload images, like posts, and manage their content.
 
